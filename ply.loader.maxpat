@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 331.0, 143.0, 633.0, 502.0 ],
+		"rect" : [ 264.0, 143.0, 670.0, 522.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -40,13 +40,60 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-15",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 42.0, 97.0, 72.0, 22.0 ],
+					"text" : "prepend set"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-14",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 162.0, 104.0, 89.0, 22.0 ],
+					"text" : "append dname"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-12",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 23.0, 121.0, 86.0, 22.0 ],
+					"text" : "prepend name"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-9",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 23.0, 64.0, 132.0, 22.0 ],
+					"text" : "loadmess #0.plydict"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-23",
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 229.5, 73.0, 64.0, 22.0 ],
-					"presentation_linecount" : 2,
+					"patching_rect" : [ 299.0, 64.0, 64.0, 22.0 ],
 					"text" : "script start"
 				}
 
@@ -58,7 +105,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 164.5, 73.0, 63.0, 22.0 ],
+					"patching_rect" : [ 234.0, 64.0, 63.0, 22.0 ],
 					"text" : "script stop"
 				}
 
@@ -190,7 +237,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 316.0, 137.0, 83.0, 22.0 ],
+					"patching_rect" : [ 385.0, 190.0, 83.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"description" : "",
 						"digest" : "",
@@ -209,7 +256,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "bang" ],
-					"patching_rect" : [ 250.0, 314.0, 22.0, 22.0 ],
+					"patching_rect" : [ 319.0, 367.0, 22.0, 22.0 ],
 					"text" : "t b"
 				}
 
@@ -220,7 +267,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 250.0, 340.0, 125.0, 22.0 ],
+					"patching_rect" : [ 319.0, 393.0, 125.0, 22.0 ],
 					"text" : "print \"ply.loader done\""
 				}
 
@@ -231,7 +278,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 238.0, 225.0, 213.0, 22.0 ],
+					"patching_rect" : [ 307.0, 278.0, 213.0, 22.0 ],
 					"text" : "print \"ply.loader converting to matrix...\""
 				}
 
@@ -459,7 +506,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 93.0, 73.0, 49.0, 22.0 ],
+					"patching_rect" : [ 162.0, 64.0, 49.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"description" : "",
 						"digest" : "",
@@ -478,7 +525,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 343.0, 44.0, 235.0, 24.0 ],
+					"patching_rect" : [ 412.0, 35.0, 235.0, 24.0 ],
 					"text" : "first time running, click here then reload"
 				}
 
@@ -490,7 +537,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 473.0, 137.0, 91.0, 22.0 ],
+					"patching_rect" : [ 542.0, 190.0, 91.0, 22.0 ],
 					"text" : "route normalize"
 				}
 
@@ -502,7 +549,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 343.0, 113.0, 149.0, 22.0 ],
+					"patching_rect" : [ 412.0, 166.0, 149.0, 22.0 ],
 					"text" : "patcherargs @normalize 1"
 				}
 
@@ -515,7 +562,7 @@
 					"maxclass" : "outlet",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 224.0, 402.0, 30.0, 30.0 ]
+					"patching_rect" : [ 293.0, 455.0, 30.0, 30.0 ]
 				}
 
 			}
@@ -527,7 +574,7 @@
 					"maxclass" : "outlet",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 181.0, 402.0, 30.0, 30.0 ]
+					"patching_rect" : [ 250.0, 455.0, 30.0, 30.0 ]
 				}
 
 			}
@@ -539,7 +586,7 @@
 					"maxclass" : "outlet",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 137.0, 402.0, 30.0, 30.0 ]
+					"patching_rect" : [ 206.0, 455.0, 30.0, 30.0 ]
 				}
 
 			}
@@ -551,7 +598,7 @@
 					"maxclass" : "outlet",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 93.0, 402.0, 30.0, 30.0 ]
+					"patching_rect" : [ 162.0, 455.0, 30.0, 30.0 ]
 				}
 
 			}
@@ -564,7 +611,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 93.0, 41.0, 30.0, 30.0 ]
+					"patching_rect" : [ 162.0, 32.0, 30.0, 30.0 ]
 				}
 
 			}
@@ -575,7 +622,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 147.0, 45.0, 194.0, 22.0 ],
+					"patching_rect" : [ 216.0, 36.0, 194.0, 22.0 ],
 					"text" : "script npm install threejs-ply-loader"
 				}
 
@@ -589,7 +636,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 9.0, 333.0, 82.0, 37.0 ],
+					"patching_rect" : [ 78.0, 386.0, 82.0, 37.0 ],
 					"text" : "normalize positions"
 				}
 
@@ -602,7 +649,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 67.0, 264.0, 24.0, 24.0 ]
+					"patching_rect" : [ 136.0, 317.0, 24.0, 24.0 ]
 				}
 
 			}
@@ -615,7 +662,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 67.0, 299.0, 45.0, 32.0 ]
+					"patching_rect" : [ 136.0, 352.0, 45.0, 32.0 ]
 				}
 
 			}
@@ -787,7 +834,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 93.0, 340.0, 41.0, 22.0 ],
+					"patching_rect" : [ 162.0, 393.0, 41.0, 22.0 ],
 					"text" : "jit.gen"
 				}
 
@@ -799,7 +846,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 93.0, 185.0, 54.0, 22.0 ],
+					"patching_rect" : [ 162.0, 238.0, 54.0, 22.0 ],
 					"text" : "deferlow"
 				}
 
@@ -811,7 +858,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 5,
 					"outlettype" : [ "dictionary", "", "", "", "" ],
-					"patching_rect" : [ 93.0, 225.0, 140.0, 22.0 ],
+					"patching_rect" : [ 162.0, 278.0, 61.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"embed" : 0,
 						"legacy" : 0,
@@ -819,7 +866,7 @@
 						"parameter_mappable" : 0
 					}
 ,
-					"text" : "dict threejs.plyloader.dict"
+					"text" : "dict"
 				}
 
 			}
@@ -830,7 +877,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 5,
 					"outlettype" : [ "", "", "", "", "" ],
-					"patching_rect" : [ 93.0, 265.0, 194.0, 22.0 ],
+					"patching_rect" : [ 162.0, 318.0, 194.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"filename" : "ply2mesh.js",
 						"parameter_enable" : 0
@@ -847,7 +894,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "" ],
-					"patching_rect" : [ 93.0, 161.0, 34.0, 22.0 ],
+					"patching_rect" : [ 162.0, 214.0, 34.0, 22.0 ],
 					"text" : "sel 1"
 				}
 
@@ -859,7 +906,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 93.0, 137.0, 63.0, 22.0 ],
+					"patching_rect" : [ 162.0, 190.0, 63.0, 22.0 ],
 					"text" : "route read"
 				}
 
@@ -872,7 +919,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 93.0, 113.0, 242.0, 22.0 ],
+					"patching_rect" : [ 162.0, 166.0, 242.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"autostart" : 1,
 						"defer" : 0,
@@ -907,7 +954,28 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-55", 0 ],
+					"source" : [ "obj-12", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-10", 0 ],
+					"source" : [ "obj-14", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-14", 0 ],
+					"source" : [ "obj-15", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-14", 0 ],
 					"source" : [ "obj-16", 0 ]
 				}
 
@@ -1053,6 +1121,22 @@
 				"patchline" : 				{
 					"destination" : [ "obj-85", 0 ],
 					"source" : [ "obj-87", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-12", 0 ],
+					"order" : 1,
+					"source" : [ "obj-9", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-15", 0 ],
+					"order" : 0,
+					"source" : [ "obj-9", 0 ]
 				}
 
 			}

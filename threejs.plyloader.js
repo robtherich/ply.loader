@@ -7,7 +7,8 @@ const VERBOSE = false;
 if(VERBOSE) max.post("hello plyloader");
 
 const handlers = {
-read: async (path ) => {
+
+read: async (path, dname) => {
 	//import * as THREE from 'three';
 
 	const { PLYLoaderFactory } = await import("threejs-ply-loader");
@@ -26,7 +27,7 @@ read: async (path ) => {
 
 	var json = geometry.toJSON();
 	try {
-		await max.setDict("threejs.plyloader.dict", json);
+		await max.setDict(dname, json);
 		max.outlet("read", 1);
 	} 
 	catch (error) {
