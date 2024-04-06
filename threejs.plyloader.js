@@ -1,61 +1,42 @@
 const max = require('max-api');
 const fs = require("fs");
+
+// use threejs ply loader
+// could instead remove this dependency 
+// and read data directly from ply file
 const THREE = require("three");
 
+// mode 0 - write and read from dictionary (slow)
+// mode 1 - write and read from matrix binaries (fast)
 const mode = 1;
 
 const VERBOSE = false;
 
 if(VERBOSE) max.post("hello plyloader");
 
+const JIT_BIN_TYPE_CHAR =    'CHAR';
+const JIT_BIN_TYPE_LONG =    'LONG';
+const JIT_BIN_TYPE_FLOAT32 = 'FL32';
+const JIT_BIN_TYPE_FLOAT64 = 'FL64';
+
+// convert 4-char code to int for writing to buffer
 function fourchar(code) 
 {
 	return Buffer.from(code).readInt32BE(0)
 }
 
-function writeJSONToMatrix(json) 
+// prepare a buffer for writing out matrix data
+// return buffer and offset where data should start writing
+function matrixBufferFromInfo(info, typesize)
 {
-	let attrs = json.data.attributes;
-	if(attrs.color) {
-		//var cmat = attr2matrix(attrs, "color");
-		//outlet(3, "jit_matrix", cmat.name);
-	}
-
-	if(attrs.normal) {
-		//var nmat = attr2matrix(attrs, "normal");
-		//outlet(2, "jit_matrix", nmat.name);
-	}
-
-	if(attrs.uv) {
-		//var uvmat = attr2matrix(attrs, "uv");
-		//outlet(1, "jit_matrix", uvmat.name);
-	}
-
-	let vcount = 0;
-	if(attrs.position) {
-		let attrname = "position";
-		let attr = attrs[attrname].array;
-		let planes = attrs[attrname].itemSize;
-		vcount = attr.length / planes;
-	}
-
 	const SIZE_INT32 = 4;
-	const SIZE_FLOAT32 = 4;
 	const JIT_BIN_HEADER_SIZE = 6 * SIZE_INT32;
 
-	// matrix info, adjust as needed
-	const typeID = fourchar('FL32');
-	const typesize = SIZE_FLOAT32;
-	const planecount = 3;
-	const dimcount = 1;
-
-	const datasize = vcount * planecount * typesize;
-
 	// 2 headers + dim count + data
-	const bufferSize = (JIT_BIN_HEADER_SIZE * 2) + (SIZE_INT32 * dimcount) + datasize
+	const bufferSize = (JIT_BIN_HEADER_SIZE * 2) + (SIZE_INT32 * info.dimcount) + info.datasize
 	const buffer = Buffer.alloc(bufferSize);
 
-	// file header
+	// matrix binary file header, except for buffer size will always be the same
 	const fileHeader = [
 		fourchar('FORM'), 
 		bufferSize, 
@@ -71,50 +52,97 @@ function writeJSONToMatrix(json)
 		offset += SIZE_INT32;
 	});
 
+	// matrix data header 
 	let cksize = JIT_BIN_HEADER_SIZE;
-	for (i = 0; i < dimcount; i++) {
+	for (i = 0; i < info.dimcount; i++) {
 		cksize += SIZE_INT32;
 	}
-	
 	let dataoffset = cksize;
-	cksize += vcount * planecount * SIZE_FLOAT32;
-
-	const matrixHeader = [fourchar('MTRX'), cksize, dataoffset, typeID, planecount, dimcount];
-	
-	if(offset != JIT_BIN_HEADER_SIZE) {
-		max.post("something screwy");
-	}
+	for (i = 0; i < info.dimcount; i++) {
+		cksize += info.dim[i] * info.planecount * typesize;
+	}	
+	const matrixHeader = [fourchar('MTRX'), cksize, dataoffset, info.typeid, info.planecount, info.dimcount];
 	matrixHeader.forEach((value) => {
 		buffer.writeInt32BE(value, offset);
 		offset += SIZE_INT32;
 	});		
 
-	if(offset != (JIT_BIN_HEADER_SIZE*2)) {
-		max.post("something screwy");
-	}
-	for (i = 0; i < dimcount; i++) {
-		// adjust for multiple dims
-		buffer.writeInt32BE(vcount, offset);
+	// write out dim sizes
+	for (i = 0; i < info.dimcount; i++) {
+		buffer.writeInt32BE(info.dim[i], offset);
 		offset += SIZE_INT32;
 	}
 
-	if(attrs.position) {
-		let attrname = "position";
-		let attr = attrs[attrname].array;
-		for(i = 0; i < vcount; i++) {
-			buffer.writeFloatBE(attr[i], offset);
-			offset += typesize;
-		}
+	return { buffer: buffer, offset : offset };
+}
+
+// fill the buffer with threejs geometry attribute data,
+// and save to a binary matrix file
+function matrixFillAndSave(attr, buffer_offset, typesize, outname)
+{
+	const count = attr.array.length;
+	const buffer = buffer_offset.buffer;
+	let offset = buffer_offset.offset;
+
+	for(i = 0; i < count; i++) {
+		buffer.writeFloatBE(attr.array[i], offset);
+		offset += typesize;
 	}
 
-	const filePath = 'writematrix.jxf';
-	fs.writeFile(filePath, buffer, (err) => {
+	fs.writeFile(outname, buffer, (err) => {
 		if (err) {
 			max.post('Error writing file:', err);
 			return;
 		}
-		max.post('Matrix file has been written successfully!');
+		max.outlet("write", outname);
 	});
+}
+
+function writeXtraAttr(attr, info, typesize, outname)
+{
+	info.planecount = attr.itemSize;
+	info.datasize = attr.array.length * typesize;
+	let buf_off = matrixBufferFromInfo(info, typesize);
+	matrixFillAndSave(attr, buf_off, typesize, outname);
+}
+
+function writeGeomToMatrix(geometry) 
+{
+	const SIZE_FLOAT32 = 4;
+	const cattr = geometry.getAttribute("color");
+	const nattr = geometry.getAttribute("normal");
+	const uattr = geometry.getAttribute("uv");
+	const pattr = geometry.getAttribute("position");
+
+	let vcount = 0;
+	if(pattr) {
+		let center = geometry.boundingSphere.center;
+		max.outlet("bounding_sphere", "center", center.x, center.y, center.z);
+		max.outlet("bounding_sphere", "radius", geometry.boundingSphere.radius);
+
+		// matrix info, adjust as needed
+		let matrixInfo = {
+			dim : [ pattr.array.length / pattr.itemSize ],
+			dimcount : 1,
+			planecount : pattr.itemSize,
+			typeid : fourchar(JIT_BIN_TYPE_FLOAT32),
+			datasize : pattr.array.length * SIZE_FLOAT32
+		}
+
+		let buf_off = matrixBufferFromInfo(matrixInfo, SIZE_FLOAT32);
+
+		if(cattr) {
+			writeXtraAttr(cattr, matrixInfo, SIZE_FLOAT32, 'colormatrix.jxf');
+		}
+		if(nattr) {
+			writeXtraAttr(nattr, matrixInfo, SIZE_FLOAT32, 'normmatrix.jxf');
+		}
+		if(uattr) {
+			writeXtraAttr(uattr, matrixInfo, SIZE_FLOAT32, 'uvmatrix.jxf');
+		}
+
+		matrixFillAndSave(pattr, buf_off, SIZE_FLOAT32, 'posmatrix.jxf');
+	}
 }
 
 const handlers = {
@@ -136,10 +164,9 @@ read: async (path, dname) => {
 	
 	if(VERBOSE) max.post("plyloader got geometry type: " + geometry.type);
 
-	let json = geometry.toJSON();
-
 	if(mode === 0) {
 		try {
+			let json = geometry.toJSON();
 			await max.setDict(dname, json);
 			max.outlet("read", 1);
 		} 
@@ -149,7 +176,7 @@ read: async (path, dname) => {
 		}
 	}
 	else {
-		writeJSONToMatrix(json);
+		writeGeomToMatrix(geometry);
 	}
 }
 };
