@@ -1,4 +1,8 @@
 # ply.loader
+With the release of Max 9 this project is no longer needed to load point clouds files in Max, simply use jit.gl.model.
+
+
+
 Ply point cloud file loader for Max
 
 To use, clone or download the repo and add to your Max Packages folder (~/Documents/Max 8/Packages). In a new patch create a **ply.loader** object and check the help file for usage. 
